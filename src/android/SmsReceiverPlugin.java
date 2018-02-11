@@ -5,8 +5,6 @@ import android.app.Activity;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -19,6 +17,8 @@ public class SmsReceiverPlugin extends CordovaPlugin {
     public final String ACTION_HAS_SMS_POSSIBILITY = "hasSMSPossibility";
     public final String ACTION_RECEIVE_SMS = "startReception";
     public final String ACTION_STOP_RECEIVE_SMS = "stopReception";
+    public static final int RECEIVE_SMS_REQ_CODE = 0;
+    public static final String RECEIVE_SMS = Manifest.permission.RECEIVE_SMS;
     private CallbackContext callbackReceive;
     private SmsReceiver smsReceiver = null;
     private boolean isReceiving = false;
@@ -42,7 +42,7 @@ public class SmsReceiverPlugin extends CordovaPlugin {
             stopReceiveSms(callbackContext);
             return true;
         } else if (ACTION_REQUEST_PERMISSION.equals(action)) {
-            requestPermission(Manifest.permission.RECEIVE_SMS, callbackContext);
+            requestPermission(RECEIVE_SMS, callbackContext);
             return true;
         }
 
@@ -112,13 +112,12 @@ public class SmsReceiverPlugin extends CordovaPlugin {
         if (Build.VERSION.SDK_INT < 23) {
             return true;
         }
-        return (PackageManager.PERMISSION_GRANTED ==
-                ContextCompat.checkSelfPermission(this.cordova.getActivity(), type));
+        return (cordova.hasPermission(type));
     }
 
     private void requestPermission(String type, CallbackContext callbackContext) {
         if (!hasPermissionGranted(type)) {
-            ActivityCompat.requestPermissions(this.cordova.getActivity(), new String[]{type}, requestCode);
+            cordova.requestPermissions(this, requestCode, type);
         }
         callbackContext.success();
     }
