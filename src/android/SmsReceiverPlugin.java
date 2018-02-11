@@ -17,10 +17,10 @@ public class SmsReceiverPlugin extends CordovaPlugin {
     public final String ACTION_HAS_SMS_POSSIBILITY = "hasSMSPossibility";
     public final String ACTION_RECEIVE_SMS = "startReception";
     public final String ACTION_STOP_RECEIVE_SMS = "stopReception";
-    public final String ACTION_CHECK_PERMISSION = "hasPermissionGranted";
     public static final int RECEIVE_SMS_REQ_CODE = 0;
     public static final String RECEIVE_SMS = Manifest.permission.RECEIVE_SMS;
     private CallbackContext callbackReceive;
+
     private SmsReceiver smsReceiver = null;
     private boolean isReceiving = false;
     private int requestCode = RECEIVE_SMS_REQ_CODE;
@@ -42,8 +42,6 @@ public class SmsReceiverPlugin extends CordovaPlugin {
         } else if (ACTION_STOP_RECEIVE_SMS.equals(action)) {
             stopReceiveSms(callbackContext);
             return true;
-        } else if (ACTION_CHECK_PERMISSION.equals(action)) {
-            return hasPermissionGranted(RECEIVE_SMS);
         } else if (ACTION_REQUEST_PERMISSION.equals(action)) {
             requestPermission(RECEIVE_SMS, callbackContext);
             return true;
