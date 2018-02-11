@@ -17,5 +17,5 @@ export function requestPermission(successCallback, errorCallback) {
 }
 
 export function hasPermissions(successCallback, errorCallback) {
-  return exec(successCallback, errorCallback, 'SmsReceiverPlugin', 'hasPermissions', []);
+  return exec(successCallback, errorCallback, 'SmsReceiverPlugin', 'hasPermissionGranted', []);
 }
